@@ -1,4 +1,4 @@
-package model.music;
+package veno.model.music;
 
 import java.util.Date;
 
