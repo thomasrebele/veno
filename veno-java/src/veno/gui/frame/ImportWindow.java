@@ -1,4 +1,4 @@
-package veno.gui;
+package veno.gui.frame;
 
 
 import java.awt.Dimension;
@@ -18,8 +18,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import veno.gui.component.FileSelectPanel;
-import veno.gui.component.ScrolledImagePanel;
+import veno.gui.component.general.FileSelectPanel;
+import veno.gui.component.general.ScrolledImagePanel;
 
 public class ImportWindow extends JFrame {
 	private static final long serialVersionUID = -3372705110837747317L;
