@@ -1,11 +1,13 @@
 package veno.model.music;
 
 import java.util.Date;
+import java.util.List;
 
-public class Piece {
-	private int id;
+import veno.Main;
+import veno.model.database.DatabaseItem;
+
+public class Piece extends DatabaseItem {
 	private String title;
-	private Date date;
 	
 	public String getTitle() {
 		return title;
@@ -14,17 +16,12 @@ public class Piece {
 		this.title = title;
 	}
 	
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
+	@Override
+	public String toString() {
+		return title;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
+	public List<Part> getParts() {
+		return Main.getDatabaseController().getParts(id);
 	}
 }
