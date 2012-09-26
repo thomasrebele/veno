@@ -1,10 +1,11 @@
-package veno.gui.component;
+package veno.gui.component.general;
 
 import java.awt.Color;
 import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -15,80 +16,84 @@ import org.netbeans.swing.outline.OutlineModel;
 import org.netbeans.swing.outline.RenderDataProvider;
 import org.netbeans.swing.outline.RowModel;
 
-import veno.model.treetable.AggregatedTreeModel;
-import veno.model.treetable.AggregatedTreeModelItem;
-import veno.model.treetable.FileTreeModel;
-import veno.model.treetable.StringDataProvider;
-import veno.model.treetable.StringRowModel;
+import veno.model.treetable.aggregated.AggregatedTreeModel;
+import veno.model.treetable.aggregated.AggregatedTreeModelItem;
+import veno.model.treetable.file.FileTreeModel;
+import veno.model.treetable.string.StringDataProvider;
+import veno.model.treetable.string.StringRowModel;
 
 public class ScrolledTreeTablePanel extends JPanel {
 	private static final long serialVersionUID = 7342160763603964852L;
 	
 	Outline outline;
 
+	private String treemodelColName = "Nodes";
 	private TreeModel treemodel;
 	private RowModel rowmodel;
 	private RenderDataProvider dataprovider;
 
 	public ScrolledTreeTablePanel() {
-		/*
-		TreeModel treeMdl = new FileTreeModel (new File("/"));
-
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-		DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("Child 1");
-		root.add(child1);
-		DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("Child 2");
-		root.add(child2);
-		TreeModel model = new DefaultTreeModel(root);
-		
-		AggregatedTreeModel aggMdl = new AggregatedTreeModel();
-		aggMdl.mountTreeModel(null, model);
-		//aggMdl.mountTreeModel((AggregatedTreeModelItem)aggMdl.getChild(null,0), model);
-		//aggMdl.mountTreeModel((AggregatedTreeModelItem)aggMdl.getChild(null,1), model);
-		aggMdl.addChildTreeModel((AggregatedTreeModelItem)aggMdl.getRoot(), model);
-		aggMdl.addChildTreeModel((AggregatedTreeModelItem)aggMdl.getRoot(), model);
-		aggMdl.addChildTreeModel((AggregatedTreeModelItem)aggMdl.getRoot(), model);
-		//aggMdl.addChildTreeModel((AggregatedTreeModelItem)aggMdl.getChild(aggMdl.getChild(null, 0),0), treeMdl);
-		aggMdl.printDebugInfo();
-		Object aggRoot = aggMdl.getRoot();
-		System.out.println(aggMdl.getChildCount(null));
-		//System.exit(0);
-		*/
-
 		outline = new Outline();
 		outline.setRootVisible (false);
 		
-		JScrollPane scroll = new JScrollPane();
-		scroll.getHorizontalScrollBar().setUnitIncrement(10);
-		scroll.getVerticalScrollBar().setUnitIncrement(10);
-		scroll.getViewport().add(outline);
+		JScrollPane scroll = new ScrollPane(outline, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		scroll.setBackground(Color.BLUE);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.add(scroll);
 	}
 	
-	public void setModel(TreeModel treemodel) {
+	public void setModel(TreeModel treemodel, String colName) {
 		this.treemodel = treemodel;
+		this.treemodelColName = colName;
 		actualize();
 	}
 	
-	public void setModel(TreeModel treemodel, RowModel rowmodel, RenderDataProvider dataprovider) {
-		this.treemodel = treemodel;
+	public void setModel(RowModel rowmodel) {
 		this.rowmodel = rowmodel;
+		actualize();
+	}
+	
+	public void setModel(RenderDataProvider dataprovider) {
 		this.dataprovider = dataprovider;
 		actualize();
 	}
 	
 	private void actualize() {
 		if(treemodel != null && rowmodel != null) { 
-			OutlineModel mdl = DefaultOutlineModel.createOutlineModel(treemodel, 
-					new StringRowModel(), true);
-			outline.setModel (mdl);
+			OutlineModel model = DefaultOutlineModel.createOutlineModel(treemodel, 
+					rowmodel, true, treemodelColName);
+			outline.setModel (model);
+			
 		}
 		
 		if(dataprovider != null) {
 			outline.setRenderDataProvider(dataprovider); 
 		}
+	}
+	
+	public void addListSelectionListener(ListSelectionListener listener) {
+		outline.getSelectionModel().addListSelectionListener(listener);
+	}
+	
+	public int getSelectedRow() {
+		return outline.getSelectedRow();
+	}
+	
+	public int[] getSelectedRows() {
+		return outline.getSelectedRows();
+	}
+	
+	public Object getSelectedObject() {
+		return outline.getValueAt(getSelectedRow(), 0);
+	}
+	
+	public Object[] getSelectedObjects() {
+		int selectedRows[] = getSelectedRows();
+		Object result[] = new Object[selectedRows.length];
+		
+		for(int i=0; i<selectedRows.length; i++) {
+			result[i] = outline.getValueAt(selectedRows[i], 0);
+		}
+		return result;
 	}
 }

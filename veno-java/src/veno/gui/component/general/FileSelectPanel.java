@@ -1,4 +1,4 @@
-package veno.gui.component;
+package veno.gui.component.general;
 
 import java.awt.Dimension;
 

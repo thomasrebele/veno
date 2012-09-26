@@ -1,4 +1,4 @@
-package veno.gui.component;
+package veno.gui.component.general;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -23,6 +23,9 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import veno.gui.icon.IconLoader;
+import veno.gui.icon.IconLoader.Icons;
 
 public class ScrolledImagePanel extends JPanel {
 	private static final long serialVersionUID = -238932412090389073L;
@@ -78,12 +81,19 @@ public class ScrolledImagePanel extends JPanel {
 		
 		// direction buttons
 		ButtonGroup directionButtonsGroup = new ButtonGroup();
-		String buttonCaptions[] = {"<", "^", ">", "_"};
+		//String buttonCaptions[] = {"<", "^", ">", "_"};
+		ImageIcon icons[] = {
+				IconLoader.getIcon(Icons.DIRECTION_LEFT),
+				IconLoader.getIcon(Icons.DIRECTION_UP),
+				IconLoader.getIcon(Icons.DIRECTION_RIGHT),
+				IconLoader.getIcon(Icons.DIRECTION_DOWN)
+		};
 		final JToggleButton directionButtons[] = new JToggleButton[4];
 		for(int i=0; i<4; i++) {
 			final int tmpi = i;
 			directionButtons[i] = new JToggleButton();
-			directionButtons[i].setText(buttonCaptions[i]);
+			//directionButtons[i].setText(buttonCaptions[i]);
+			directionButtons[i].setIcon(icons[i]);
 			directionButtons[i].addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent arg0) {
@@ -173,7 +183,6 @@ public class ScrolledImagePanel extends JPanel {
 			redo = true;
 		}
 
-		System.out.println("orientation " + imageOrientation + " next " + nextImageOrientation);
 		if(imageOrientation != nextImageOrientation || redo) {
 			rotatedImage = rotateImage(scaledImage, nextImageOrientation);
 			if(rotatedImage == null) return;
