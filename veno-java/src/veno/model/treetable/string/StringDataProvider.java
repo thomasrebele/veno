@@ -1,10 +1,12 @@
-package veno.model.treetable;
+package veno.model.treetable.string;
 
 import java.awt.Color;
 
 import javax.swing.Icon;
 
 import org.netbeans.swing.outline.RenderDataProvider;
+
+import veno.model.treetable.aggregated.AggregatedTreeModelItem;
 
 public class StringDataProvider implements RenderDataProvider {
 

@@ -1,4 +1,4 @@
-package veno.model.treetable;
+package veno.model.treetable.file;
 
 
 import java.io.File;
@@ -6,6 +6,8 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import org.netbeans.swing.outline.RenderDataProvider;
+
+import veno.model.treetable.aggregated.AggregatedTreeModelItem;
 
 public class FileDataProvider implements RenderDataProvider {
 	private File cast(Object o) {

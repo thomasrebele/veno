@@ -1,4 +1,4 @@
-package veno.model.treetable;
+package veno.model.treetable.aggregated;
 
 import java.util.ArrayList;
 import java.util.HashMap;

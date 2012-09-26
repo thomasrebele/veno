@@ -1,4 +1,4 @@
-package veno.model.treetable;
+package veno.model.treetable.aggregated;
 
 import javax.swing.tree.TreeModel;
 
@@ -30,6 +30,14 @@ public class AggregatedTreeModelItem {
 			item = ((AggregatedTreeModelItem) item).object;
 		}
 		return item;
+	}
+	
+	public static Object unpack(Object item) {
+		Object o = item;
+		if(o instanceof AggregatedTreeModelItem) {
+			o = ((AggregatedTreeModelItem) o).unpack();
+		}
+		return o;
 	}
 	
 	public String toString() {

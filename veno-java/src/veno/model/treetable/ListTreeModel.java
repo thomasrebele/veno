@@ -1,15 +1,20 @@
-package veno.model.treetable.file;
+package veno.model.treetable;
 
-import java.io.File;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.tree.TreeModel;
 
-public class FileTreeModel implements TreeModel {
+public class ListTreeModel<T> implements TreeModel {
 
-	private File root;
+	private List<T> list;
+	private Object root;
 
-	public FileTreeModel(File root) {
+	/*public ListTreeModel(List<T> list) {
+		this.list = list;
+	}*/
+	
+	public ListTreeModel(Object root, List<T> list) {
+		this.list = list;
 		this.root = root;
 	}
 
@@ -19,27 +24,26 @@ public class FileTreeModel implements TreeModel {
 	}
 
 	@Override
-	public Object getChild(Object parent, int index) {
-		File f = (File) parent;
-		return f.listFiles()[index];
+	public T getChild(Object parent, int index) {
+		if(parent == root)
+			return list.get(index);
+		return null;
 	}
 
 	@Override
 	public int getChildCount(Object parent) {
-		File f = (File) parent;
-		if (!f.isDirectory()) {
-			return 0;
-		} else {
-			if(f.list() == null) return 0;
-			return f.list().length;
+		if(parent == root) {
+			return list.size();
 		}
+		return 0;
 	}
 
 	@Override
 	public int getIndexOfChild(Object parent, Object child) {
-		File par = (File) parent;
-		File ch = (File) child;
-		return Arrays.asList(par.listFiles()).indexOf(ch);
+		if(parent == root) {
+			return list.indexOf(child);
+		}
+		return -1;
 	}
 
 	@Override
@@ -49,8 +53,11 @@ public class FileTreeModel implements TreeModel {
 
 	@Override
 	public boolean isLeaf(Object node) {
-		File f = (File) node;
-		return !f.isDirectory();
+		if(node == root)
+			return false;
+		else {
+			return true;
+		}
 	}
 
 	@Override

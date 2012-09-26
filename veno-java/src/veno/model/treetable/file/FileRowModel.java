@@ -1,10 +1,12 @@
-package veno.model.treetable;
+package veno.model.treetable.file;
 
 
 import java.io.File;
 import java.util.Date;
 
 import org.netbeans.swing.outline.RowModel;
+
+import veno.model.treetable.aggregated.AggregatedTreeModelItem;
 
 public class FileRowModel implements RowModel {
 	private File cast(Object o) {

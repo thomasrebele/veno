@@ -1,8 +1,19 @@
-package veno.model.treetable.string;
+package veno.model.treetable;
+
+import java.io.File;
 
 import org.netbeans.swing.outline.RowModel;
 
-public class StringRowModel implements RowModel {
+import veno.model.music.Piece;
+import veno.model.treetable.aggregated.AggregatedTreeModelItem;
+
+public class PieceRowModel implements RowModel {
+	private Piece cast(Object o) {
+		if(o instanceof Piece) {
+			return (Piece)o;
+		}
+		return new Piece();
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -11,6 +22,10 @@ public class StringRowModel implements RowModel {
 
 	@Override
 	public Object getValueFor(Object node, int column) {
+		Piece p = cast(node);
+		if(p instanceof Piece) {
+			return p.getTitle();
+		}
 		return node;
 	}
 
@@ -21,7 +36,7 @@ public class StringRowModel implements RowModel {
 
 	@Override
 	public boolean isCellEditable(Object node, int column) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -31,7 +46,7 @@ public class StringRowModel implements RowModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return "Name";
+		return "Titel";
 	}
 	
 }
